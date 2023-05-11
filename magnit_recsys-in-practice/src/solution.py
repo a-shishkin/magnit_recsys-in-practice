@@ -75,7 +75,7 @@ def solution(input_file_name: str, output_file_name: str):
 
 
     wrappers ={
-        'svd':SurpriseWrapper(model_name='05_baseline_svd_train', folder_name='/magnit_recsys-in-practice/models', df_train=df_train, n_recommendations=10), 
+        'svd':SurpriseWrapper(model_name='05_baseline_svd_train.surprise', folder_name='/magnit_recsys-in-practice/models', df_train=df_train, n_recommendations=10), 
         'lfm_cos':LightFMWrapper(model_name='', folder_name='/magnit_recsys-in-practice/models', df_train=df_train, n_recommendations=10),           
         'catboost':CatBoostWrapper(model_name='catboost_05', folder_name='/magnit_recsys-in-practice/models', df_train=df_train, n_recommendations=10), 
         'knn':SurpriseWrapper(model_name='05_baseline_knn_train', folder_name='/magnit_recsys-in-practice/models', df_train=df_train, n_recommendations=10), 

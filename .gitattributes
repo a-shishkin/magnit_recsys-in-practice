@@ -1,0 +1,2 @@
+.surprise filter=lfs diff=lfs merge=lfs -text
+*.surprise filter=lfs diff=lfs merge=lfs -text
