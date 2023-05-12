@@ -36,11 +36,6 @@ def main(task: str):
     return render_template('index.html', task=task)
 
 
-@app.route('/download_file')
-def download_file(path='output_df.csv'):
-    return send_from_directory(directory=UPLOAD_FOLDER, path=path, as_attachment=True)
-                               
-                               
 @app.route("/add_data", methods=['POST'])
 def upload_file():
     """
@@ -78,9 +73,9 @@ def upload_file():
         answer['Успех'] = True
         answer['Путь'] = input_file_name
         
-        solution(input_file_name, os.path.join(UPLOAD_FOLDER, 'output_df.csv', logger))
-        return send_from_directory(directory=UPLOAD_FOLDER, path='output_df.csv', as_attachment=True)
-        #return answer
+        solution(input_file_name, os.path.join(UPLOAD_FOLDER, 'output_df.csv'), logger)
+        #return send_from_directory(directory=UPLOAD_FOLDER, path='output_df.csv', as_attachment=True)
+        return answer
     else:
         answer['Сообщение'] = 'Файл не загружен'
         return answer

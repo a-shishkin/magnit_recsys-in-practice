@@ -97,11 +97,11 @@ class ContextualRankerData(pl.LightningDataModule):
         return td.DataLoader(self.test_dataset, batch_size=512, shuffle=False, num_workers=0)  
     
 class NNWrapper():
-    def __init__(self, model_name:str, folder_name:str, df_train: pd.DataFrame, n_recommendations:int = 10, n_users:int = 24983, n_items = 100):
+    def __init__(self, model_name:str, folder_name:str, df_train: pd.DataFrame, logger, n_recommendations:int = 10, n_users:int = 24983, n_items = 100):
         self.n_users = n_users
         self.n_items = n_items
         self.model_name = model_name
-    
+        self.logger = logger
         embed = 32
         self.model = ContextualRanker.load_from_checkpoint(os.path.join(folder_name, model_name),
         map_location=torch.device("cpu")
@@ -135,7 +135,7 @@ class NNWrapper():
         df_test['Rating_pred'] = predictions
         
         res = self.helper.filter_viewed_items(self.df_train, df_test, self.n_users, self.n_recommendations)
-        print(self.model_name, 'time:', round(time.time() - t1, 3))
+        self.logger.info(f'{self.model_name} done; time: {round(time.time() - t1, 3)}')
         
         #res = 
         return res

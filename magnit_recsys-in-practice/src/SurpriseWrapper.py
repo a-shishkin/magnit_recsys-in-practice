@@ -8,10 +8,11 @@ from surprise import dump, Reader
 
 
 class SurpriseWrapper():
-    def __init__(self,  model_name:str, folder_name:str, df_train: pd.DataFrame, n_recommendations:int = 10, n_users:int = 24983, n_items = 100):
+    def __init__(self,  model_name:str, folder_name:str, df_train: pd.DataFrame, logger, n_recommendations:int = 10, n_users:int = 24983, n_items = 100):
         self.n_users = n_users
         self.n_items = n_items
         self.model_name = model_name
+        self.logger = logger
         self.reader = Reader(rating_scale=(-10, 10))
         _, self.model = dump.load(os.path.join(folder_name, model_name))
         self.n_recommendations = n_recommendations
@@ -30,5 +31,5 @@ class SurpriseWrapper():
         #display(df_pred)
         
         res = self.helper.filter_viewed_items(self.df_train, df_pred, self.n_users, self.n_recommendations)
-        print(self.model_name, 'time:', round(time.time() - t1, 3))
+        self.logger.info(f'{self.model_name} done; time: {round(time.time() - t1, 3)}')
         return res

@@ -58,7 +58,7 @@ def rank_candidates_for_user(user: int, params: dict, candidates: dict, joke_qua
     return [{rec_list[0] : first_rating}, rec_list]
         
         
-def solution(input_file_name: str, output_file_name: str):
+def solution(input_file_name: str, output_file_name: str, logger):
     df = pd.read_csv('/magnit_recsys-in-practice/data/train_joke_df.csv') # Чтобы не рекомендовать айтемы, которые пользователь уже оценил    
     df['UID'] = df['UID'] - 1
     df['JID'] = df['JID'] - 1
@@ -72,9 +72,9 @@ def solution(input_file_name: str, output_file_name: str):
         joke_volume = pickle.load(f)
        
     wrappers ={
-        'svd':SurpriseWrapper(model_name='svd.surprise', folder_name='/magnit_recsys-in-practice/models', df_train=df),
-        'catboost':CatBoostWrapper(model_name='catboost', folder_name='/magnit_recsys-in-practice/models', df_train=df),
-        'nn_bias':NNWrapper(model_name='nn_bias.ckpt', folder_name='/magnit_recsys-in-practice/models', df_train=df)
+        'svd':SurpriseWrapper(model_name='svd.surprise', folder_name='/magnit_recsys-in-practice/models', df_train=df, logger=logger),
+        'catboost':CatBoostWrapper(model_name='catboost', folder_name='/magnit_recsys-in-practice/models', df_train=df, logger=logger),
+        'nn_bias':NNWrapper(model_name='nn_bias.ckpt', folder_name='/magnit_recsys-in-practice/models', df_train=df, logger=logger)
     }
     
     candidates = {model_name: wrapper.predict() for model_name, wrapper in wrappers.items()}
@@ -95,3 +95,5 @@ def solution(input_file_name: str, output_file_name: str):
     output_df = df_users
     
     output_df.to_csv(output_file_name, sep=';', index=False)
+
+    logger.info(f'file saved {output_file_name}')
