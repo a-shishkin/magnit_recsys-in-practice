@@ -4,8 +4,8 @@ from pathlib import Path
 import pandas as pd
 from loguru import logger
 from flask import Flask, render_template, request, redirect, url_for, send_file, send_from_directory
-from .config import *
-from .solution import solution
+from config import *
+from solution import solution
 
 # Создаем логгер и отправляем информацию о запуске
 # Важно: логгер в Flask написан на logging, а не loguru,
@@ -37,8 +37,8 @@ def main(task: str):
 
 
 @app.route('/download_file')
-def download_file():
-        return send_from_directory(directory='/magnit_recsys-in-practice/data', filename='output_df.csv', as_attachment=True)
+def download_file(path='output_df.csv'):
+    return send_from_directory(directory=UPLOAD_FOLDER, path=path, as_attachment=True)
                                
                                
 @app.route("/add_data", methods=['POST'])
@@ -68,19 +68,18 @@ def upload_file():
     
     # Загружаем
     if file and allowed_file(file.filename):
-        input_file_name = '/magnit_recsys-in-practice/data/input_df.csv'
+        input_file_name = os.path.join(UPLOAD_FOLDER, 'input_df.csv')
         
         file.save(input_file_name)
-        logger.info("save file", input_file_name)
+        logger.info(f"save file {input_file_name}")
         print(input_file_name)
         
         answer['Сообщение'] = 'Файл успешно загружен!'
         answer['Успех'] = True
         answer['Путь'] = input_file_name
-        #return send_from_directory(directory='/magnit_recsys-in-practice/data', path='input_df.csv', as_attachment=True)
         
-        solution(input_file_name, '/magnit_recsys-in-practice/data/output_df.csv')
-        return send_from_directory(directory='/magnit_recsys-in-practice/data', path='output_df.csv', as_attachment=True)
+        solution(input_file_name, os.path.join(UPLOAD_FOLDER, 'output_df.csv', logger))
+        return send_from_directory(directory=UPLOAD_FOLDER, path='output_df.csv', as_attachment=True)
         #return answer
     else:
         answer['Сообщение'] = 'Файл не загружен'

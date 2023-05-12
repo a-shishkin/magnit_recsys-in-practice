@@ -1,10 +1,5 @@
-docker build --pull --rm -f "Dockerfile" -t magnit_recsys-in-practice "."
+docker build --pull --rm -f "Dockerfile" -t a-shishkin "."
 
-docker run --rm -d -p 5000:5000 -v /magnit_recsys-in-practice/log:/magnit_recsys-in-practice/log -v /magnit_recsys-in-practice/data:/my_project/data --name magnit_recsys-in-practice magnit_recsys-in-practice:latest
+docker run --rm -d -p 5000:5000 --name a-shishkin a-shishkin:latest
 
 docker cp my_script:/my_project/data/280b85166b934661860c268c7787f133.csv d:\rrr.csv
-
-
-docker build --pull --rm -f "Dockerfile2" -t magnit_recsys-in-practice2 "."
-docker run --rm -d -p 5001:5001 --name magnit_recsys-in-practice2 magnit_recsys-in-practice2:latest
-
