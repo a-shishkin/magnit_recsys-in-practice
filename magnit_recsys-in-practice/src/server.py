@@ -114,7 +114,7 @@ def show_file():
     
     # Приводим данные в нужный вид
     if type == 'csv':
-        answer['Данные'] = pd.read_csv(file_path).to_dict()
+        answer['Данные'] = pd.read_csv(file_path, sep=';').to_dict()
         return answer
     else:
         answer['Данные'] = 'Не поддерживаемы тип'
